@@ -1,0 +1,17 @@
+ public class Carousel_Comp_Controller {
+
+    //Get Record id as parameter,
+    //get all the attachments related to this
+    //create a list and return it
+    @AuraEnabled
+    public static List<Attachment> getAttachments(String recId){
+        List<Attachment> urlList = new List<Attachment>();
+        if(recId != NULL){
+            for(Attachment att : [select id,name from attachment where parentId =: recId]){
+                urlList.add(att);
+            }
+        }
+        return urlList;
+        
+    }
+}

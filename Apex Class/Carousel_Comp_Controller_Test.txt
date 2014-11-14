@@ -1,0 +1,24 @@
+@isTest
+public class Carousel_Comp_Controller_Test {
+    public static testMethod void  Carousel_Comp_Controllertest(){
+        //insert 1 account
+        Account acc=new Account(Name='Acme Inc');
+        insert acc;
+		System.assert(acc.Id != NULL);
+		        
+        //insert Attachement for account
+        Attachment attach=new Attachment();    
+        attach.Name='Unit Test Attachment';
+        Blob bodyBlob=Blob.valueOf('Unit Test Attachment Body');
+        attach.body=bodyBlob;
+        attach.parentId=acc.id;
+        insert attach;
+        
+        List<Attachment> attachments=[select id, name from Attachment where parent.id=:acc.id];
+        System.assertEquals(1, attachments.size());
+        
+        List<Attachment> attachs = Carousel_Comp_Controller.getAttachments(acc.Id);
+        System.assert(attachs != null);
+        System.assert(attachs.size() >0);
+    }
+}
